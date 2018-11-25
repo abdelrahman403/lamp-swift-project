@@ -1,0 +1,10 @@
+body{
+	/*background-color: #00a6ed*/;
+}
+div#header {
+	background: url('/img/logo.png') #ffb400 no-repeat top;
+	height: 200px;
+}
+div.container {
+	margin-top: 50px;
+}

@@ -29,7 +29,7 @@ class Welcome extends CI_Controller {
 	}
 	public function book(){
 		$form_data = $this->input->post();
-		$data['email'] = $this->input->post("email");
+		$data['email'] = $this->input->post("email")
 		$data['name'] = $this->input->post("username");
 		$data['passengers'] = $this->input->post("passengers");
 		$departure = date('Y-m-d H:i:s',strtotime($this->input->post("departure")));

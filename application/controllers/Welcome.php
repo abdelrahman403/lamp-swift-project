@@ -28,7 +28,7 @@ class Welcome extends CI_Controller {
 		$this->load->view('welcome_message');
 	}
 	public function book(){
-		$form_data = $this->input->post()
+		$form_data = $this->input->post();
 		$data['email'] = $this->input->post("email");
 		$data['name'] = $this->input->post("username");
 		$data['passengers'] = $this->input->post("passengers");

@@ -36,7 +36,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  <option>3</option>
 		  <option>4</option>
 		  <option>5</option>
-		  <option>6</option>
 		</select>
 	  </div>
 	  <div class="form-group">

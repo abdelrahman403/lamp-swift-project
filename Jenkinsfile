@@ -20,7 +20,7 @@ pipeline {
             steps {
                 // sh'cd ${project_path}'
                 sh'cd ${test_path}'
-                sh'phpunit'
+                sh'./phpunit.phar'
                 // sh'sudo ./phpunit.phar'
             }
         

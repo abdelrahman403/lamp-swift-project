@@ -16,12 +16,13 @@ pipeline {
         }
 
         stage('Unit Tests') {
-            dir(project_path) { // change current directory
-                steps {
-                    sh'cd ${test_path}'
-                    sh'sudo ./phpunit.phar'
-                }
+            // change current directory
+            steps {
+                sh'cd ${project_path}'
+                sh'cd ${test_path}'
+                sh'sudo ./phpunit.phar'
             }
+        
         }
         
         stage('Integrating With Integration Branch') {

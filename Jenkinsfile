@@ -4,25 +4,23 @@ pipeline {
     environment {
         def test_path = 'application/tests'
         def devRootDir = '/home/swift/public_html'
-        def remote = [:]
-        remote.name = 'webdev'
-        remote.host = '192.168.1.35'
-        remote.user = 'vagrant'
-        remote.password = 'vagrant'
-        remote.allowAnyHosts = true
+        def project_path = 'lamp-swift-project'
+        
     }
 
     stages {
         stage('Cloning From Feature Branch') {
             steps {
-                git 'https://github.com/abdelrhman-abdelazim/lamp-swift-project/tree/feature'
+                git branch: 'feature', url: 'https://github.com/abdelrhman-abdelazim/lamp-swift-project'
             }
         }
 
         stage('Unit Tests') {
-            steps {
-                sh'cd ${test_path}'
-                sh'phpunit'
+            dir(project_path) { // change current directory
+                steps {
+                    sh'cd ${test_path}'
+                    sh'sudo ./phpunit.phar'
+                }
             }
         }
         
@@ -37,20 +35,24 @@ pipeline {
 
         stage('Push To Integration Branch') {
             steps {
-                sh'git push origin integration'
+                withCredentials([usernamePassword(credentialsId: 'd5778a21-d821-4caf-bd07-98b347453711', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USER')]) {
+                    sh'git checkout integration'
+                    sh'git push origin integration'
+                    // sh('git push https://${GIT_USER}:${GIT_PASSWORD}@https://github.com/abdelrhman-abdelazim/lamp-swift-project --tags')
+                }
             }
         }
 
-        stage('Pull In Dev Machine Using Remote ssh') {
+        stage('Cloning In Dev Machine Using Remote ssh') {
+            agent { label 'webdev_slave' }
             steps {
-                sshCommand remote: remote, command: "cd ${devRootDir}"
-                sshCommand remote: remote, command: "git checkout integration"
-                sshCommand remote: remote, command: "git pull origin integration"
+                sh'git clone -b integration https://github.com/abdelrhman-abdelazim/lamp-swift-project'
+                sh'mv lamp-swift-project swift-project-${BUILD_NUMBER}'
+                sh'ln -s swift-project-${BUILD_NUMBER} public_html'
+                sh'chown -R swift.swift swift-project-${BUILD_NUMBER}'
             }
         }
-
     }
-
 }
 
 

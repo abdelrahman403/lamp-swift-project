@@ -18,7 +18,7 @@ pipeline {
         stage('Unit Tests') {
             // change current directory
             steps {
-                sh'cd ${project_path}'
+                // sh'cd ${project_path}'
                 sh'cd ${test_path}'
                 sh'sudo ./phpunit.phar'
             }
